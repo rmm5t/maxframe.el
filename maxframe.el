@@ -170,7 +170,9 @@ specified by HEIGHT."
   (interactive)
   (when (and mf-restore-width mf-restore-height mf-restore-top mf-restore-left)
     (set-frame-size (selected-frame) mf-restore-width mf-restore-height)
-    (set-frame-position (selected-frame) mf-restore-left mf-restore-top))
+    (set-frame-position (selected-frame)
+                        (if (consp mf-restore-left) 0 mf-restore-left)
+                        mf-restore-top))
   (setq mf-restore-width nil
         mf-restore-height nil
         mf-restore-top nil
