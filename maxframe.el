@@ -144,44 +144,48 @@ specified by HEIGHT."
   (min (display-pixel-height)
        (or mf-max-height (display-pixel-height))))
 
-(defun x-maximize-frame ()
+(defun x-maximize-frame (&optional the-frame)
   "Maximize the current frame (x or mac only)"
   (interactive)
-  (unless (or mf-restore-width mf-restore-height mf-restore-top mf-restore-left)
-    (setq mf-restore-width (frame-width)
-          mf-restore-height (frame-height)
-          mf-restore-top (frame-parameter (selected-frame) 'top)
-          mf-restore-left (frame-parameter (selected-frame) 'left)))
-  (mf-set-frame-pixel-size (selected-frame)
-                           (mf-max-display-pixel-width)
-                           (mf-max-display-pixel-height))
-  (set-frame-position (selected-frame) mf-offset-x mf-offset-y))
+  (let ((target-frame 
+	 (if the-frame the-frame (selected-frame))))
+    (unless (or mf-restore-width mf-restore-height mf-restore-top mf-restore-left)
+      (setq mf-restore-width (frame-width)
+	    mf-restore-height (frame-height)
+	    mf-restore-top (frame-parameter target-frame 'top)
+	    mf-restore-left (frame-parameter target-frame 'left)))
+    (mf-set-frame-pixel-size target-frame
+			     (mf-max-display-pixel-width)
+			     (mf-max-display-pixel-height))
+    (set-frame-position target-frame mf-offset-x mf-offset-y)))
 
-(defun x-restore-frame ()
+(defun x-restore-frame (&optional the-frame)
   "Restore the current frame (x or mac only)"
   (interactive)
+  (let ((target-frame 
+	 (if the-frame the-frame (selected-frame))))
   (when (and mf-restore-width mf-restore-height mf-restore-top mf-restore-left)
-    (set-frame-size (selected-frame) mf-restore-width mf-restore-height)
-    (set-frame-position (selected-frame)
+    (set-frame-size target-frame mf-restore-width mf-restore-height)
+    (set-frame-position target-frame
                         (if (consp mf-restore-left) 0 mf-restore-left)
                         mf-restore-top))
   (setq mf-restore-width nil
         mf-restore-height nil
         mf-restore-top nil
-        mf-restore-left nil))
+        mf-restore-left nil)))
 
-(defun maximize-frame ()
+(defun maximize-frame ( &optional the-frame)
   "Maximizes the frame to fit the display if under a windowing
 system."
   (interactive)
   (cond ((eq window-system 'w32) (w32-maximize-frame))
-        ((memq window-system '(x mac ns)) (x-maximize-frame))))
+        ((memq window-system '(x mac ns)) (x-maximize-frame the-frame))))
 
-(defun restore-frame ()
+(defun restore-frame ( &optional the-frame)
   "Restores a maximized frame.  See `maximize-frame'."
   (interactive)
   (cond ((eq window-system 'w32) (w32-restore-frame))
-        ((memq window-system '(x mac ns)) (x-restore-frame))))
+        ((memq window-system '(x mac ns)) (x-restore-frame the-frame))))
 
 (defalias 'mf 'maximize-frame)
 
