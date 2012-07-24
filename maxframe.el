@@ -100,11 +100,13 @@ support the true nature of display-pixel-height.  See
   :type 'integer
   :group 'maxframe)
 
+;;;###autoload
 (defun w32-maximize-frame ()
   "Maximize the current frame (windows only)"
   (interactive)
   (w32-send-sys-command 61488))
 
+;;;###autoload
 (defun w32-restore-frame ()
   "Restore a minimized/maximized frame (windows only)"
   (interactive)
@@ -139,6 +141,7 @@ specified by HEIGHT."
   (min (display-pixel-height)
        (or mf-max-height (display-pixel-height))))
 
+;;;###autoload
 (defun x-maximize-frame (&optional the-frame)
   "Maximize the current frame (x or mac only)"
   (interactive)
@@ -158,6 +161,7 @@ specified by HEIGHT."
                              (mf-max-display-pixel-height))
     (set-frame-position target-frame mf-offset-x mf-offset-y)))
 
+;;;###autoload
 (defun x-restore-frame (&optional the-frame)
   "Restore the current frame (x or mac only)"
   (interactive)
@@ -178,6 +182,7 @@ specified by HEIGHT."
       (set-frame-parameter target-frame 'mf-restore-top    nil)
       (set-frame-parameter target-frame 'mf-restore-left   nil))))
 
+;;;###autoload
 (defun maximize-frame ( &optional the-frame)
   "Maximizes the frame to fit the display if under a windowing
 system."
@@ -185,12 +190,14 @@ system."
   (cond ((eq window-system 'w32) (w32-maximize-frame))
         ((memq window-system '(x mac ns)) (x-maximize-frame the-frame))))
 
+;;;###autoload
 (defun restore-frame ( &optional the-frame)
   "Restores a maximized frame.  See `maximize-frame'."
   (interactive)
   (cond ((eq window-system 'w32) (w32-restore-frame))
         ((memq window-system '(x mac ns)) (x-restore-frame the-frame))))
 
+;;;###autoload
 (defalias 'mf 'maximize-frame)
 
 (provide 'maxframe)
