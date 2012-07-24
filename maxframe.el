@@ -1,4 +1,4 @@
-;; maximize the emacs frame based on display size
+;;; maxframe.el --- maximize the emacs frame based on display size
 
 ;; Copyright (C) 2007 Ryan McGeary
 ;; Author: Ryan McGeary
