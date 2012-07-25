@@ -201,3 +201,5 @@ system."
 (defalias 'mf 'maximize-frame)
 
 (provide 'maxframe)
+
+;;; maxframe.el ends here
