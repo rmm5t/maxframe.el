@@ -28,6 +28,27 @@ To restore the frame to it's original dimensions, call restore-frame:
 puts the emacs frame in the top left corner of the display and calculates
 the maximum number of columns and rows that can fit in the display
 
+## Alternatives
+
+There is a good list of [full-screening alternatives on the Emacs Wiki](http://emacswiki.org/emacs/FullScreen).
+
+### On a Mac?
+
+While I still have maxframe in my emacs initialization, I only use it as a
+backup for when `ns-toggle-fullscreen` is not present. I compile emacs with
+native fullscreen support now, and it's pretty nice. If you use
+[homebrew](https://github.com/mxcl/homebrew), here's the compilation step
+that'll do it for you.
+
+```bash
+$ brew install emacs --srgb --cocoa
+```
+
+See the relevant portion of
+[my emacs config](https://github.com/rmm5t/dotfiles/blob/master/emacs.d/rmm5t/maxframe.el)
+to see how to make the distinction between `ns-toggle-fullscreen` and
+`maxframe`.
+
 ## Limitations
 
 Requires Emacs 22 (for fringe support), but maximize-frame still works
