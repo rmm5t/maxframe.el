@@ -174,8 +174,8 @@ specified by HEIGHT."
       (when (and mf-restore-width mf-restore-height mf-restore-top mf-restore-left)
         (set-frame-size target-frame mf-restore-width mf-restore-height)
         (set-frame-position target-frame
-                            (if (consp mf-restore-left) 0 mf-restore-left)
-                          mf-restore-top))
+                            (if (consp mf-restore-left) (car (cdr mf-restore-left)) mf-restore-left)
+                            (if (consp mf-restore-top)  (car (cdr mf-restore-top))  mf-restore-top)))
       (set-frame-parameter target-frame 'mf-maximized      nil)
       (set-frame-parameter target-frame 'mf-restore-width  nil)
       (set-frame-parameter target-frame 'mf-restore-height nil)
