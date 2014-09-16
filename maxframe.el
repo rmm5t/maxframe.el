@@ -156,10 +156,10 @@ specified by HEIGHT."
       (set-frame-parameter target-frame 'mf-restore-top    (frame-parameter nil 'top))
       (set-frame-parameter target-frame 'mf-restore-left   (frame-parameter nil 'left)))
     (set-frame-parameter target-frame 'mf-maximized t)
+    (set-frame-position target-frame mf-offset-x mf-offset-y)
     (mf-set-frame-pixel-size target-frame
                              (mf-max-display-pixel-width)
-                             (mf-max-display-pixel-height))
-    (set-frame-position target-frame mf-offset-x mf-offset-y)))
+                             (mf-max-display-pixel-height))))
 
 ;;;###autoload
 (defun x-restore-frame (&optional the-frame)
@@ -174,8 +174,8 @@ specified by HEIGHT."
       (when (and mf-restore-width mf-restore-height mf-restore-top mf-restore-left)
         (set-frame-size target-frame mf-restore-width mf-restore-height)
         (set-frame-position target-frame
-                            (if (consp mf-restore-left) 0 mf-restore-left)
-                          mf-restore-top))
+                            (if (consp mf-restore-left) (car (cdr mf-restore-left)) mf-restore-left)
+                            (if (consp mf-restore-top)  (car (cdr mf-restore-top))  mf-restore-top)))
       (set-frame-parameter target-frame 'mf-maximized      nil)
       (set-frame-parameter target-frame 'mf-restore-width  nil)
       (set-frame-parameter target-frame 'mf-restore-height nil)
