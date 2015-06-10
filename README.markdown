@@ -24,17 +24,21 @@ Bitcoin: `1rmm5tv6f997JK5bLcGbRCZyVjZUPkQ2m`
 
 Example of lines to be added to your .emacs:
 
-    (require 'maxframe)
-    (add-hook 'window-setup-hook 'maximize-frame t)
+```lisp
+(require 'maxframe)
+(add-hook 'window-setup-hook 'maximize-frame t)
+```
 
 If using two framebuffers (monitors), it might be necesssary to specify a
 mf-max-width value set to the pixel width of main framebuffer.  This is
 necessary because emacs does not yet support sniffing different
 framebuffers.  Example:
 
-    (require 'maxframe)
-    (setq mf-max-width 1600)  ;; Pixel width of main monitor.
-    (add-hook 'window-setup-hook 'maximize-frame t)
+```lisp
+(require 'maxframe)
+(setq mf-max-width 1600)  ;; Pixel width of main monitor.
+(add-hook 'window-setup-hook 'maximize-frame t)
+```
 
 To restore the frame to it's original dimensions, call restore-frame:
 
