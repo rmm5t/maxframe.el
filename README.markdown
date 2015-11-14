@@ -66,7 +66,7 @@ $ brew install emacs --srgb --cocoa
 ```
 
 See the relevant portion of
-[my emacs config](https://github.com/rmm5t/dotfiles/blob/master/emacs.d/rmm5t/maxframe.el)
+[my emacs config](https://github.com/rmm5t/dotfiles/blob/master/emacs.d/personal/maxframe.el)
 to see how to make the distinction between `ns-toggle-fullscreen` and
 `maxframe`.
 
