@@ -141,12 +141,22 @@ specified by HEIGHT."
   (min (display-pixel-height)
        (or mf-max-height (display-pixel-height))))
 
+(defun mf-workarea (&optional the-frame)
+  "Return the workarea of THE-FRAME.
+If left specified, then use the current frame."
+  (let ((result ())
+        (frame (or the-frame (window-frame (selected-window)))))
+    (dolist (alist (display-monitor-attributes-list))
+      (if (memq frame (cdr (assoc 'frames alist)))
+          (push (assoc 'workarea alist) result)))
+    (cdr (car (nreverse result)))))
+
 ;;;###autoload
 (defun x-maximize-frame (&optional the-frame)
   "Maximize the current frame (x or mac only)"
   (interactive)
   (let ((target-frame
-	 (if the-frame the-frame (selected-frame))))
+         (if the-frame the-frame (selected-frame))))
     (unless (or (frame-parameter target-frame 'mf-restore-width)
                 (frame-parameter target-frame 'mf-restore-height)
                 (frame-parameter target-frame 'mf-restore-top)
@@ -156,17 +166,22 @@ specified by HEIGHT."
       (set-frame-parameter target-frame 'mf-restore-top    (frame-parameter nil 'top))
       (set-frame-parameter target-frame 'mf-restore-left   (frame-parameter nil 'left)))
     (set-frame-parameter target-frame 'mf-maximized t)
-    (set-frame-position target-frame mf-offset-x mf-offset-y)
-    (mf-set-frame-pixel-size target-frame
-                             (mf-max-display-pixel-width)
-                             (mf-max-display-pixel-height))))
+    (if (and (= mf-offset-x 0) (= mf-offset-y 0))
+        (let ((workarea (mf-workarea target-frame)))
+          (set-frame-position target-frame (nth 0 workarea) (nth 1 workarea))
+          (mf-set-frame-pixel-size target-frame
+                                   (nth 2 workarea) (nth 3 workarea)))
+      (set-frame-position target-frame mf-offset-x mf-offset-y)
+      (mf-set-frame-pixel-size target-frame
+                               (mf-max-display-pixel-width)
+                               (mf-max-display-pixel-height)))))
 
 ;;;###autoload
 (defun x-restore-frame (&optional the-frame)
   "Restore the current frame (x or mac only)"
   (interactive)
   (let ((target-frame
-	 (if the-frame the-frame (selected-frame))))
+         (if the-frame the-frame (selected-frame))))
     (let ((mf-restore-width  (frame-parameter target-frame 'mf-restore-width))
           (mf-restore-height (frame-parameter target-frame 'mf-restore-height))
           (mf-restore-top    (frame-parameter target-frame 'mf-restore-top))
@@ -183,7 +198,7 @@ specified by HEIGHT."
       (set-frame-parameter target-frame 'mf-restore-left   nil))))
 
 ;;;###autoload
-(defun maximize-frame ( &optional the-frame)
+(defun maximize-frame (&optional the-frame)
   "Maximizes the frame to fit the display if under a windowing
 system."
   (interactive)
@@ -191,7 +206,7 @@ system."
         ((memq window-system '(x mac ns)) (x-maximize-frame the-frame))))
 
 ;;;###autoload
-(defun restore-frame ( &optional the-frame)
+(defun restore-frame (&optional the-frame)
   "Restores a maximized frame.  See `maximize-frame'."
   (interactive)
   (cond ((eq window-system 'w32) (w32-restore-frame))
